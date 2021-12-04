@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -46,14 +47,16 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{
                     Manifest.permission.READ_CONTACTS}, REQUEST_CODE_READ_CONTACTS);
         }
+
         // если разрешение установлено, загружаем контакты через кнопку btnReadContacts
-        if (!READ_CONTACTS_GRANTED) {
-            Toast.makeText(this, "Требуется установить разрешения",
-                    Toast.LENGTH_LONG).show();
-        }
-
-        btnReadContacts.setOnClickListener(v -> loadContacts());
-
+        btnReadContacts.setOnClickListener(v -> {
+            if (READ_CONTACTS_GRANTED) {
+                loadContacts();
+            } else {
+                Toast.makeText(MainActivity.this, "Требуется установить разрешения",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @SuppressLint("Range")
